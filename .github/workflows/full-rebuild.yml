@@ -18,6 +18,8 @@ permissions:
 jobs:
   build-spack:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     strategy:
       matrix:
         os: [{dir: AlmaLinux9,suffix: alma9}]
