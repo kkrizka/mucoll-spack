@@ -1,5 +1,11 @@
+git remote add jmcarcell https://github.com/kkrizka/spack || true
+git fetch kkrizka -q
+
 # py-onnx: add a patch for the standard, remove after 1.15.0
 git cherry-pick bbd205543b09139f2f57f21099eb366c9f183d76 -X theirs --no-commit
 
 # add gaudi 39
 git cherry-pick 5ebf45861f688337dddcdee2242d4f479a832d06 -X theirs --no-commit
+
+# Fix application of cmodel to openloops compilation.
+git cherry-pick 815079edd9b33730602d41430b324b11d023d486 -X theirs --no-commit
