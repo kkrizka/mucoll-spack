@@ -7,5 +7,5 @@ git cherry-pick bbd205543b09139f2f57f21099eb366c9f183d76 -X theirs --no-commit
 # add gaudi 39
 git cherry-pick 5ebf45861f688337dddcdee2242d4f479a832d06 -X theirs --no-commit
 
-# Fix application of cmodel to openloops compilation.
-git cherry-pick 815079edd9b33730602d41430b324b11d023d486 -X theirs --no-commit
+# openloops: Fix application of cmodel to compilation for aarch64.
+git cherry-pick 5e856ed3eba22b7159f553a0e5240f3cc42b2a46 -X theirs --no-commit
