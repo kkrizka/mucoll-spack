@@ -36,16 +36,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Make owner name lowercase
-        run: |
-            echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
-        env:
-            OWNER: '${{ github.repository_owner }}'
       - name: Extract metadata for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{env.OWNER_LC}}/mucoll-dummy
+          images: ${{ env.REGISTRY }}/${{ env.repository }}/mucoll-dummy
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
@@ -55,8 +50,8 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ steps.meta.outputs.version }}
-            REPOSITORY=${{ env.REGISTRY }}/${{env.OWNER_LC}}
-          tags: ${{ env.REGISTRY }}/${{env.OWNER_LC}}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
+            REPOSITORY=${{ env.REGISTRY }}/${{ env.repository }}
+          tags: ${{ env.REGISTRY }} / ${{ env.repository }}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
           labels: ${{ steps.meta.outputs.labels }}
   build-minimal:
     runs-on: ubuntu-latest
