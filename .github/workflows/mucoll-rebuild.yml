@@ -52,16 +52,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: lowercase owner name
-        run: |
-            echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
-        env:
-            OWNER: '${{ github.repository_owner }}'
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{env.OWNER_LC}}/mucoll-dummy
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/mucoll-dummy
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
@@ -71,7 +66,7 @@ jobs:
           file: ./${{matrix.os.dir}}/Dockerfile-sim
           build-args: |
             VERSION=${{ steps.meta.outputs.version }}
-            REPOSITORY=${{ env.REGISTRY }}/${{env.OWNER_LC}}
+            REPOSITORY=${{ env.REGISTRY }}/${{ github.repository_owner }}
             GITHUB_REPOSITORY=${{ github.repository }}
             MUCOLL_SHA=${{ github.sha }}
-          tags: ${{ env.REGISTRY }}/${{env.OWNER_LC}}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
