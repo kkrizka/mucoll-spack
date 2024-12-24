@@ -51,7 +51,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.meta.outputs.version }}
             REPOSITORY=${{ env.REGISTRY }}/${{ github.repository_owner }}
-          tags: ${{ env.REGISTRY }} / ${{ github.repository_owner }}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME}}:${{steps.meta.outputs.version}}-${{matrix.os.suffix}}
           labels: ${{ steps.meta.outputs.labels }}
   build-minimal:
     runs-on: ubuntu-latest
