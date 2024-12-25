@@ -1,4 +1,4 @@
-git remote add jmcarcell https://github.com/kkrizka/spack || true
+git remote add kkrizka https://github.com/kkrizka/spack || true
 git fetch kkrizka -q
 
 # py-onnx: add a patch for the standard, remove after 1.15.0
