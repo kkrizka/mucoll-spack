@@ -8,4 +8,4 @@ git cherry-pick bbd205543b09139f2f57f21099eb366c9f183d76 -X theirs --no-commit
 git cherry-pick 5ebf45861f688337dddcdee2242d4f479a832d06 -X theirs --no-commit
 
 # openloops: Fix application of cmodel to compilation for aarch64.
-git cherry-pick 5e856ed3eba22b7159f553a0e5240f3cc42b2a46 -X theirs --no-commit
+git cherry-pick 5e856ed3eba22b7159f553a0e5240f3cc42b2a46..d7239c8dd43f417780b561d49843a0aedd8818da -X theirs --no-commit
