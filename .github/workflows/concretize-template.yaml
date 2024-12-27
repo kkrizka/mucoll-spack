@@ -38,7 +38,6 @@ jobs:
       - name: Apply the patches
         shell: spack-bash {0}
         run: |
-          find .
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh -f spack/var/repo/key4hep-spack
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh -f spack/var/repo/mucoll-spack
       - name: Spack Local Setup
