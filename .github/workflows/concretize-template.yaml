@@ -1,48 +1,49 @@
-name: concretize-template
+name: Spack Build
 
-on:
-  workflow_call:
-    inputs:
-      target:
-        required: true
-        type: string
+on: push
+
 jobs:
-  concretize:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
+  prepare:
+    runs-on: ubuntu-22.04
+    permissions:
+      packages: write
     steps:
-      - name: Checkout Spack
-        uses: actions/checkout@v4
+      - name: Set up Spack
+        uses: spack/setup-spack@v2
         with:
-          repository: spack/spack
-          path: spack
-
-      - name: Checkout Key4hep
+          ref: 6cb16c39ab85fbc211e50be804fa7a15f24ccebc # Spack version (examples: develop, releases/v0.23)
+          buildcache: true                              # Configure oci://ghcr.io/spack/github-actions-buildcache
+          color: true                                   # Force color output (SPACK_COLOR=always)
+          path: spack                                   # Where to clone Spack
+      - name: Checkout key4hep repository
         uses: actions/checkout@v4
         with:
           repository: key4hep/key4hep-spack
-          path: key4hep-spack
-
-      - name: Checkout this repo
+          path: spack/var/repo/key4hep-spack
+      - name: Checkout mucoll repository
         uses: actions/checkout@v4
         with:
-          path: mucoll-spack
-
-      - name: Concretize mucoll-common
+          path: spack/var/repo/mucoll-spack
+      - name: Apply the patches
         run: |
-          source spack/share/spack/setup-env.sh
+          spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/key4hep-spack/.cherry-pick
+          spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/mucoll-spack/.cherry-pick
+      - name: Spack Concretize
+        shell: spack-bash
+        run: |
           spack --version
-          spack repo add key4hep-spack
-          spack repo add mucoll-spack
+          spack repo add spack/var/repo/key4hep-spack
+          spack repo add spack/var/repo/mucoll-spack
           spack compiler find
           spack env activate mucoll-spack/environments/mucoll-${{ inputs.target }}
-          spack add mucoll-stack %gcc@11:
           spack concretize
-          spack spec -Nt > ${GITHUB_WORKSPACE}/spec-${{ inputs.target }}.log
-
-      - name: Store artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: spec-list
-          path: ${GITHUB_WORKSPACE}/spec-${{ inputs.target }}.log
+      - name: Spack Install
+        shell: spack-bash
+        run: |
+          spack install
+      - name: Push Spack Packages
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: spack -e . buildcache push --base-image ubuntu:22.04 --update-index local-buildcache
+        if: ${{ !cancelled() }}
