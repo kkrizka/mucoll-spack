@@ -42,7 +42,7 @@ jobs:
           spack repo add spack/var/repo/key4hep-spack
           spack repo add spack/var/repo/mucoll-spack
           spack compiler find
-          spack env activate mucoll-spack/environments/mucoll-${{ inputs.target }}
+          spack env activate ${SPACK_ROOT}/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack concretize
       - name: Spack Install
         shell: spack-bash {0}
