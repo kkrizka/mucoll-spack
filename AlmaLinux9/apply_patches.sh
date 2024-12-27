@@ -36,6 +36,8 @@ REPO=$(realpath ${1})
 
 # Determine what commit of spack we have
 cd ${SPACK_ROOT}
+pwd
+ls -a
 SPACK_COMMIT=$(git rev-parse HEAD)
 
 # Determine key4hep supported spack commit
