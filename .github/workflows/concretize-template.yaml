@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: key4hep/key4hep-spack
+          ref: dc0b2bc4aaad8f3ef5f3c7f62ff5b0277a554eee
           path: spack/var/repo/key4hep-spack
       - name: Checkout mucoll repository
         uses: actions/checkout@v4
