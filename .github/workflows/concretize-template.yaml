@@ -35,18 +35,22 @@ jobs:
         run: |
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/key4hep-spack
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/mucoll-spack
-      - name: Spack Concretize
+      - name: Spack Local Setup
         shell: spack-bash {0}
         run: |
           spack --version
           spack repo add spack/var/repo/key4hep-spack
           spack repo add spack/var/repo/mucoll-spack
           spack compiler find
+      - name: Spack Concretize
+        shell: spack-bash {0}
+        run: |
           spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack concretize
       - name: Spack Install
         shell: spack-bash {0}
         run: |
+          spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack install
       - name: Push Spack Packages
         env:
