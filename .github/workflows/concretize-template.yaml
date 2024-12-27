@@ -30,12 +30,12 @@ jobs:
         with:
           path: spack/var/repo/mucoll-spack
       - name: Apply the patches
-        shell: spack-bash
+        shell: spack-bash {0}
         run: |
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/key4hep-spack/.cherry-pick
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/mucoll-spack/.cherry-pick
       - name: Spack Concretize
-        shell: spack-bash
+        shell: spack-bash {0}
         run: |
           spack --version
           spack repo add spack/var/repo/key4hep-spack
@@ -44,7 +44,7 @@ jobs:
           spack env activate mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack concretize
       - name: Spack Install
-        shell: spack-bash
+        shell: spack-bash {0}
         run: |
           spack install
       - name: Push Spack Packages
