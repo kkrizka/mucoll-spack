@@ -6,7 +6,7 @@ if [ ${#} != 1 ]; then
     exit 1
 fi
 
-REPO=${1}
+REPO=$(realpath ${1})
 
 # Determine what commit of spack we have
 cd ${SPACK_ROOT}
