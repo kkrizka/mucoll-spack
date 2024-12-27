@@ -1,6 +1,11 @@
 name: Spack Build
 
-on: push
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
 
 jobs:
   prepare:
@@ -25,6 +30,7 @@ jobs:
         with:
           path: spack/var/repo/mucoll-spack
       - name: Apply the patches
+        shell: spack-bash
         run: |
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/key4hep-spack/.cherry-pick
           spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh spack/var/repo/mucoll-spack/.cherry-pick

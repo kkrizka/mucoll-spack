@@ -1,4 +1,4 @@
-name: concretize-ubuntu
+name: Spack Build Template
 
 on: push
 
