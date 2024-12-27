@@ -1,6 +1,6 @@
 name: concretize-ubuntu
 
-on: [pull_request]
+on: push
 
 jobs:
   concretize:
@@ -8,6 +8,6 @@ jobs:
       fail-fast: false
       matrix:
         target: [common, release, release-debug]
-    uses: ./.github/workflows/concretize-template.yaml
+    uses: .github/workflows/concretize-template.yaml
     with:
       target: ${{ matrix.target }}
