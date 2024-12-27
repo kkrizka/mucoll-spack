@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: key4hep/key4hep-spack
-          ref: dc0b2bc4aaad8f3ef5f3c7f62ff5b0277a554eee
+          ref: 334aa25cf90cbbaf693ac29509d4d7b790effecb
           path: spack/var/repo/key4hep-spack
       - name: Checkout mucoll repository
         uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
           spack repo add spack/var/repo/key4hep-spack
           spack repo add spack/var/repo/mucoll-spack
           spack compiler find
-          spack env activate ${SPACK_ROOT}/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
+          spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack concretize
       - name: Spack Install
         shell: spack-bash {0}
