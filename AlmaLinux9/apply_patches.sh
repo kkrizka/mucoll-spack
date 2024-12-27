@@ -35,6 +35,10 @@ fi
 REPO=$(realpath ${1})
 
 # Determine what commit of spack we have
+if [ -z "${SPACK_ROOT+x}" ]; then
+    echo "No spack detected."
+    exit 1
+fi
 cd ${SPACK_ROOT}
 pwd
 ls -a
