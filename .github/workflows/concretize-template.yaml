@@ -21,6 +21,7 @@ jobs:
           color: true                                   # Force color output (SPACK_COLOR=always)
           path: spack                                   # Where to clone Spack
       - name: Spack Setup Build Cache
+        shell: spack-bash {0}
         run: |
           spack config --scope system add 'config:install_tree:padded_length:128'
           spack config --scope system add 'mirrors:local-buildcache:url:"oci://ghcr.io/${{ github.repository_owner }}/spack-buildcache"'
