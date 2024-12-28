@@ -56,5 +56,5 @@ jobs:
         env:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: spack -e . buildcache push --base-image ubuntu:22.04 --update-index local-buildcache
+        run: spack -e spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image ubuntu:22.04 --update-index local-buildcache
         if: ${{ !cancelled() }}
