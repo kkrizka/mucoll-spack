@@ -9,7 +9,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: gitlab-registry.cern.ch/linuxsupport/alma9-base:latest
     permissions:
       packages: write
     steps:
@@ -58,5 +60,5 @@ jobs:
           spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack install --only-concrete --no-add --fail-fast
       - name: Push Spack Packages
-        run: spack -e spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image ubuntu:22.04 --update-index local-buildcache
+        run: spack -e spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image gitlab-registry.cern.ch/linuxsupport/alma9-base:latest --update-index local-buildcache
         if: ${{ !cancelled() }}
