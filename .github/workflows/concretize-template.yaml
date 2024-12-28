@@ -23,11 +23,11 @@ jobs:
       - name: Spack Setup Build Cache
         shell: spack-bash {0}
         run: |
-          spack config --scope system add 'config:install_tree:padded_length:128'
-          spack config --scope system add 'mirrors:local-buildcache:url:"oci://ghcr.io/${{ github.repository_owner }}/spack-buildcache"'
-          spack config --scope system add 'mirrors:local-buildcache:signed:false'
-          spack config --scope system add 'mirrors:local-buildcache:access_pair:id_variable:GITHUB_USER'
-          spack config --scope system add 'mirrors:local-buildcache:secret_variable:GITHUB_TOKEN'
+          spack config --scope site add 'config:install_tree:padded_length:128'
+          spack config --scope site add 'mirrors:local-buildcache:url:"oci://ghcr.io/${{ github.repository_owner }}/spack-buildcache"'
+          spack config --scope site add 'mirrors:local-buildcache:signed:false'
+          spack config --scope site add 'mirrors:local-buildcache:access_pair:id_variable:GITHUB_USER'
+          spack config --scope site add 'mirrors:local-buildcache:secret_variable:GITHUB_TOKEN'
       - name: Checkout key4hep repository
         uses: actions/checkout@v4
         with:
