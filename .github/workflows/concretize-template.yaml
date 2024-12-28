@@ -56,7 +56,7 @@ jobs:
         shell: spack-bash {0}
         run: |
           spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
-          spack install
+          spack install --only-concrete --no-add --fail-fast
       - name: Push Spack Packages
         run: spack -e spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image ubuntu:22.04 --update-index local-buildcache
         if: ${{ !cancelled() }}
