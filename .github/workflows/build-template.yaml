@@ -15,6 +15,17 @@ jobs:
     permissions:
       packages: write
     steps:
+      - name: Setup System Dependencies
+        run: |
+          dnf update -y
+          dnf groupinstall -y "Development Tools"
+          dnf install -y vim gfortran wget python3-pip epel-release mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel
+          dnf install -y parallel ccache mold
+          dnf install -y boto3 requests
+          dnf clean all
+          # Add the new Certificate Authority (needed for xrootd)
+          wget https://uit.stanford.edu/sites/default/files/2023/10/11/incommon-rsa-ca2.pem -P /usr/share/pki/ca-trust-source/anchors && \
+          /usr/bin/update-ca-trust
       - name: Set up Spack
         uses: spack/setup-spack@v2
         with:
