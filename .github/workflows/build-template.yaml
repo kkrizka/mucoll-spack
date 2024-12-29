@@ -30,22 +30,23 @@ jobs:
         with:
           path: mucoll-spack  
       - name: Determine spack and key3hep ref
+        id: getref
         run: |
-          cat mucoll-spack/.lastest-commit >>${SPACK_REF}
-          cat mucoll-spack/.key4kep-commit >>${KEY4HEP_REF}
+          echo "::set-output name=spack_ref::$(cat mucoll-spack/.latest-commit)"
+          echo "::set-output name=key4hep_ref::$(cat mucoll-spack/.key4hep-commit)"
       - name: Checkout key4hep repository
         uses: actions/checkout@v4
         with:
           repository: key4hep/key4hep-spack
-          ref: ${{ env.KEY4HEP_REF }}
+          ref: ${{ steps.getref.outputs.key4hep_ref }}
           path: key4hep-spack
       - name: Set up Spack
         uses: spack/setup-spack@v2
         with:
-          ref: ${{ env.SPACK_REF }} # Spack version (examples: develop, releases/v0.23)
-          color: true               # Force color output (SPACK_COLOR=always)
-          path: spack               # Where to clone Spack
-          buildcache: false         # No central build cache (incompatible)
+          ref: ${{ steps.getref.outputs.spack_ref }} # Spack version (examples: develop, releases/v0.23)
+          color: true                                # Force color output (SPACK_COLOR=always)
+          path: spack                                # Where to clone Spack
+          buildcache: false                          # No central build cache (incompatible)
       - name: Spack Setup Build Cache
         shell: spack-bash {0}
         run: |
