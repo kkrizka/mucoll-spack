@@ -7,7 +7,7 @@ ARG VERSION=master
 ARG REPOSITORY=madbaron
 FROM ${REPOSITORY}/mucoll-minimal:${VERSION}-alma9
 
-ARG MUCOLL_SHA=af4e29a57182b38e2fbd1aad84b1a1571ac5b4ab
+ARG MUCOLL_SHA=e1ca07e73780cc5727b140b95eaf16ef2c7d1ad1
 ARG GITHUB_REPOSITORY=kkrizka/mucoll-spack
 
 # Adding repository: MuColl
