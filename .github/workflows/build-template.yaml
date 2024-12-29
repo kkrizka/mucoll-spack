@@ -64,6 +64,12 @@ jobs:
           spack repo add key4hep-spack
           spack repo add mucoll-spack
           spack compiler find
+      - name: Spack Build key4hep-dev-external
+        shell: spack-bash {0}
+        run: |
+          spack env activate key4hep-spack/environments/key4hep-dev-external
+          spack concretize --reuse
+          spack install --only-concrete --no-add --fail-fast
       - name: Spack Concretize
         shell: spack-bash {0}
         run: |
