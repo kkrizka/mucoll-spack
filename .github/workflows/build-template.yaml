@@ -31,11 +31,12 @@ jobs:
           ref: 6cb16c39ab85fbc211e50be804fa7a15f24ccebc # Spack version (examples: develop, releases/v0.23)
           color: true                                   # Force color output (SPACK_COLOR=always)
           path: spack                                   # Where to clone Spack
+          buildcache: false                             # No central build cache (incompatible)
       - name: Spack Setup Build Cache
         shell: spack-bash {0}
         run: |
           spack config add 'config:install_tree:padded_length:128'
-          spack mirror add --oci-username '${{ github.actor }}' --oci-password '${{ secrets.GITHUB_TOKEN }}' --unsigned local-buildcache 'oci://ghcr.io/${{ github.repository_owner }}/spack-alma9-buildcache'
+          spack mirror add --oci-username '${{ github.actor }}' --oci-password '${{ secrets.GITHUB_TOKEN }}' --unsigned local-buildcache 'oci://ghcr.io/${{ github.repository_owner }}/spack-buildcache'
       - name: Checkout key4hep repository
         uses: actions/checkout@v4
         with:
