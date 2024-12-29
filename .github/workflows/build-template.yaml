@@ -25,50 +25,54 @@ jobs:
           # Add the new Certificate Authority (needed for xrootd)
           wget https://uit.stanford.edu/sites/default/files/2023/10/11/incommon-rsa-ca2.pem -P /usr/share/pki/ca-trust-source/anchors && \
           /usr/bin/update-ca-trust
+      - name: Checkout mucoll repository
+        uses: actions/checkout@v4
+        with:
+          path: mucoll-spack  
+      - name: Determine spack and key3hep ref
+        run: |
+          cat mucoll-spack/.lastest-commit >>${SPACK_REF}
+          cat mucoll-spack/.key4kep-commit >>${KEY4HEP_REF}
+      - name: Checkout key4hep repository
+        uses: actions/checkout@v4
+        with:
+          repository: key4hep/key4hep-spack
+          ref: ${{ env.KEY4HEP_REF }}
+          path: key4hep-spack
       - name: Set up Spack
         uses: spack/setup-spack@v2
         with:
-          ref: 6cb16c39ab85fbc211e50be804fa7a15f24ccebc # Spack version (examples: develop, releases/v0.23)
-          color: true                                   # Force color output (SPACK_COLOR=always)
-          path: spack                                   # Where to clone Spack
-          buildcache: false                             # No central build cache (incompatible)
+          ref: ${{ env.SPACK_REF }} # Spack version (examples: develop, releases/v0.23)
+          color: true               # Force color output (SPACK_COLOR=always)
+          path: spack               # Where to clone Spack
+          buildcache: false         # No central build cache (incompatible)
       - name: Spack Setup Build Cache
         shell: spack-bash {0}
         run: |
           spack config add 'config:install_tree:padded_length:128'
           spack mirror add --oci-username '${{ github.actor }}' --oci-password '${{ secrets.GITHUB_TOKEN }}' --unsigned local-buildcache 'oci://ghcr.io/${{ github.repository_owner }}/spack-buildcache'
-      - name: Checkout key4hep repository
-        uses: actions/checkout@v4
-        with:
-          repository: key4hep/key4hep-spack
-          ref: 334aa25cf90cbbaf693ac29509d4d7b790effecb
-          path: spack/var/repo/key4hep-spack
-      - name: Checkout mucoll repository
-        uses: actions/checkout@v4
-        with:
-          path: spack/var/repo/mucoll-spack
       - name: Apply the patches
         shell: spack-bash {0}
         run: |
-          SPACK_ROOT=$(realpath spack) spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh -f spack/var/repo/key4hep-spack
-          SPACK_ROOT=$(realpath spack) spack/var/repo/mucoll-spack/AlmaLinux9/apply_patches.sh -f spack/var/repo/mucoll-spack
+          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh -f key4hep-spack
+          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh -f mucoll-spack
       - name: Spack Local Setup
         shell: spack-bash {0}
         run: |
           spack --version
-          spack repo add spack/var/repo/key4hep-spack
-          spack repo add spack/var/repo/mucoll-spack
+          spack repo add key4hep-spack
+          spack repo add mucoll-spack
           spack compiler find
       - name: Spack Concretize
         shell: spack-bash {0}
         run: |
-          spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
+          spack env activate mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack concretize
       - name: Spack Install
         shell: spack-bash {0}
         run: |
-          spack env activate spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }}
+          spack env activate mucoll-spack/environments/mucoll-${{ inputs.target }}
           spack install --only-concrete --no-add --fail-fast
       - name: Push Spack Packages
-        run: spack -e spack/var/repo/mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image gitlab-registry.cern.ch/linuxsupport/alma9-base:latest --update-index local-buildcache
+        run: spack -e mucoll-spack/environments/mucoll-${{ inputs.target }} buildcache push --base-image gitlab-registry.cern.ch/linuxsupport/alma9-base:latest --update-index local-buildcache
         if: ${{ !cancelled() }}
