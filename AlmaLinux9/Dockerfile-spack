@@ -44,6 +44,6 @@ RUN source /opt/setup_spack.sh && \
     spack compiler find && \
     if [ -n "${SPACK_BUILDCACHE}" ]; then \
         for buildcache in ${SPACK_BUILDCACHE//:/ }; do \
-            spack mirror add --unsigned local-buildcache "${buildcache}" \
+            spack mirror add --unsigned local-buildcache "${buildcache}"; \
         done \
     fi
