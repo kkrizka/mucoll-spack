@@ -24,7 +24,7 @@ spack:
     overlay:
       require: '@0.25'
     lcgeo:
-      require: '@0.20'
+      require: '@master'
     lcio:
       require: '@2.22'
     forwardtracking:
