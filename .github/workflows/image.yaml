@@ -1,0 +1,21 @@
+name: Build and Publish Docker Image
+on: push
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-spack:
+    uses: ./.github/workflows/image-template.yaml
+    with:
+      image: spack
+  build-minimal:
+    needs: build-spack
+    uses: ./.github/workflows/image-template.yaml
+    with:
+      image: minimal
+  build-sim:
+    needs: build-minimal
+    uses: ./.github/workflows/image-template.yaml
+    with:
+      image: sim
