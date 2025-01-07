@@ -56,8 +56,8 @@ jobs:
       - name: Apply the patches
         shell: spack-bash {0}
         run: |
-          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh -f key4hep-spack
-          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh -f mucoll-spack
+          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh key4hep-spack
+          SPACK_ROOT=$(realpath spack) mucoll-spack/AlmaLinux9/apply_patches.sh mucoll-spack
       - name: Spack Local Setup
         shell: spack-bash {0}
         run: |
