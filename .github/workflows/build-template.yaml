@@ -65,20 +65,6 @@ jobs:
           spack repo add key4hep-spack
           spack repo add mucoll-spack
           spack compiler find
-      # The key4hep-dev-external needs to be built first. Otherwise gdb will fail with
-      # the following error. Probably some compile-time check being triggered due to a
-      # dependency being compiled in the wrong order.
-      #
-      #     error: expected identifier before numeric constant
-      #        180 | # define TRAP_HWBKPT 4
-      #            |                      ^
-      #
-      - name: Spack Build key4hep-dev-external
-        shell: spack-bash {0}
-        run: |
-          spack env activate key4hep-spack/environments/key4hep-dev-external
-          spack concretize --reuse
-          spack install --only-concrete --no-add --fail-fast
       - name: Spack Concretize
         shell: spack-bash {0}
         run: |
